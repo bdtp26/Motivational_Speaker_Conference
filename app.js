@@ -1,3 +1,11 @@
+<script type="module">
+  import { Toast } from 'bootstrap.esm.min.js'
+
+  Array.from(document.querySelectorAll('.toast'))
+    .forEach(toastNode => new Toast(toastNode))
+</script>
+
+
 const form = document.querySelector("form");
 const membersArea = document.getElementById("membersArea");
 
