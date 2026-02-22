@@ -24,6 +24,7 @@
   const form = document.querySelector("form");
     if (!form) {
   console.warn("No form found on this page.");
+      if (!form) throw new Error("Stop: no form on this page.");
 }
  const membersArea = document.getElementById("membersArea");
 if (!membersArea) console.warn("No membersArea found on this page.");
@@ -38,7 +39,7 @@ if (!membersArea) console.warn("No membersArea found on this page.");
   const zip = document.getElementById("inputZip");
 
   let members = JSON.parse(localStorage.getItem("members")) || [];
-  let editIndex = null;
+
 
   // Some regex for email reqs
   function validEmail(v) {
@@ -103,7 +104,6 @@ const member = {
           <strong>${m.name}</strong> (${m.email})<br>
           Age: ${m.age} | Phone: ${m.phone}<br>
           Address: ${m.address}<br>
-          <button type="button" onclick="editMember(${i})">Edit</button>
         </div><hr>
       `;
     });
@@ -114,11 +114,6 @@ const member = {
       <pre>${JSON.stringify(members, null, 2)}</pre>
     `;
   }
-
-  // Utilizing global
-
-    showToast("Edit mode", "Make changes and click Submit to update.");
-  };
 
   render();
 
