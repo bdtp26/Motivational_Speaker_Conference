@@ -22,7 +22,7 @@
 <h2 style="margin-top: 20px; margin-left: 85px">Sign up</h2>
 <p style="margin-top: 20px; margin-left: 30px; color:blue; font-weight: bold;">Want to attend a motiviational speaker conference? Use the form below to sign up.</p>
 
-<form action="/submit-page" method="POST>
+<form action="/submit-page" method="POST><form>
 <div class="mb-3">
  <label for="fname" style="margin-top: 20px; margin-left: 30px; margin-bottom: 6px;">Full Name:</label>
 <input type="fname" id="fname" name="fname" required>
@@ -48,7 +48,7 @@
 </div>
 <div class="mb-3">
  <label for="inputState" class="form-label" style="margin-left: 30px; display: inline-block; margin-bottom: 6px;">State:</label>
-    <select id="inputState" class="form-select" style="width: 50px; display: inline-block;">
+    <select id="inputState" class="form-select" style="width: auto; display: inline-block;">
     <option value=""></option>
     <option value="AL">Alabama</option>
     <option value="AK">Alaska</option>
@@ -114,6 +114,7 @@
 
 </form>
 
+    <div id="membersArea"></div>
  <!-- Footer -->
   <footer>
   <a href="#" style="margin-left: 50px;">Go to top</a>
