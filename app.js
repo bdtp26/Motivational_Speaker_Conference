@@ -85,14 +85,7 @@ if (!form) {
       membersArea.innerHTML = "";
 
       members.forEach((m) => {
-        membersArea.innerHTML += `
-          <div>
-            <strong>${m.name}</strong> (${m.email})<br>
-            Age: ${m.age} | Phone: ${m.phone}<br>
-            Address: ${m.address}<br>
-            City: ${m.city} | State: ${m.state} | Zip: ${m.zip}
-          </div><hr>
-        `;
+        membersArea.innerHTML += ``;
       });
 
 membersArea.innerHTML += ``;
