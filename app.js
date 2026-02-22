@@ -25,8 +25,8 @@
     if (!form) {
   console.warn("No form found on this page.");
 }
-  const membersArea = document.getElementById("membersArea");
-    if (!membersArea) return;
+ const membersArea = document.getElementById("membersArea");
+if (!membersArea) console.warn("No membersArea found on this page.");
 
   const email = document.getElementById("email");
   const nameInput = document.getElementById("fname");
