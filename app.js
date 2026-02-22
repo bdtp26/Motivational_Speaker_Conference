@@ -95,9 +95,7 @@ if (!form) {
         `;
       });
 
-      membersArea.innerHTML += `
-        <h4>Stored JSON</h4>
-        <pre>${JSON.stringify(members, null, 2)}</pre>
+membersArea.innerHTML += ``;
       `;
     }
 
