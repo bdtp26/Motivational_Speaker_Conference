@@ -1,12 +1,10 @@
 // Ivory Cathey
 
-import { Toast } from './bootstrap.esm.min.js';
-
 // Bootstrap toast
 const toastEl = document.getElementById("msgToast");
 const toastTitleEl = document.getElementById("toastTitle");
 const toastBodyEl = document.getElementById("toastBody");
-const toast = toastEl ? new Toast(toastEl) : null;
+const toast = toastEl ? new bootstrap.Toast(toastEl) : null;
 
 function showToast(title, message) {
   
