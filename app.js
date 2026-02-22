@@ -78,7 +78,7 @@ if (!form) {
       localStorage.setItem("members", JSON.stringify(members));
 
       form.reset();
-      render();
+       render();
     });
 
     function render() {
@@ -92,6 +92,6 @@ membersArea.innerHTML += ``;
       `;
     }
 
-    render();
+   
   }
 }
