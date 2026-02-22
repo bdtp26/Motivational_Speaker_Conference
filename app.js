@@ -36,7 +36,7 @@ if (!form) {
     const city = document.getElementById("city");
     const zip = document.getElementById("inputZip");
 
-    let members = JSON.parse(localStorage.getItem("members")) || [];
+        let members = [];
 
     function validEmail(v) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
