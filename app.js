@@ -1,119 +1,108 @@
 // Ivory Cathey
 
+import { Toast } from './bootstrap.esm.min.js';
 
-  import { Toast } from './bootstrap.esm.min.js';
+// Bootstrap toast
+const toastEl = document.getElementById("msgToast");
+const toastTitleEl = document.getElementById("toastTitle");
+const toastBodyEl = document.getElementById("toastBody");
+const toast = toastEl ? new Toast(toastEl) : null;
 
-  // Bootstrap toast
-  const toastEl = document.getElementById("msgToast");
-  const toastTitleEl = document.getElementById("toastTitle");
-  const toastBodyEl = document.getElementById("toastBody");
-  const toast = toastEl ? new Toast(toastEl) : null;
-
-  function showToast(title, message) {
-    // Fallback if the toast HTML isn't present yet
-    if (!toast) {
-      alert(`${title}: ${message}`);
-      return;
-    }
-    toastTitleEl.textContent = title;
-    toastBodyEl.textContent = message;
-    toast.show();
+function showToast(title, message) {
+  
+  // Fallback if the toast HTML isn't present yet
+  if (!toast) {
+    alert(`${title}: ${message}`);
+    return;
   }
-
-  // combination w Brian's HTML
-  const form = document.querySelector("form");
-    if (!form) {
-  console.warn("No form found on this page.");
-      if (!form) throw new Error("Stop: no form on this page.");
+  toastTitleEl.textContent = title;
+  toastBodyEl.textContent = message;
+  toast.show();
 }
- const membersArea = document.getElementById("membersArea");
-if (!membersArea) console.warn("No membersArea found on this page.");
 
-  const email = document.getElementById("email");
-  const nameInput = document.getElementById("fname");
-  const phone = document.getElementById("phone");;
-  const age = document.getElementById("age");
-  const address = document.getElementById("address");
-  const state = document.getElementById("inputState");
-  const city = document.getElementById("city");
-  const zip = document.getElementById("inputZip");
+// Brian's form
+const form = document.querySelector("form");
+if (!form) {
+  console.warn("No form found on this page. app.js will not run.");
+} else {
+  const membersArea = document.getElementById("membersArea");
+  if (!membersArea) {
+    console.warn("No membersArea found on this page. app.js will not run.");
+  } else {
+    const email = document.getElementById("email");
+    const nameInput = document.getElementById("fname");
+    const phone = document.getElementById("phone");
+    const age = document.getElementById("age");
+    const address = document.getElementById("address");
+    const state = document.getElementById("inputState");
+    const city = document.getElementById("city");
+    const zip = document.getElementById("inputZip");
 
-  let members = JSON.parse(localStorage.getItem("members")) || [];
+    let members = JSON.parse(localStorage.getItem("members")) || [];
 
-
-  // Some regex for email reqs
-  function validEmail(v) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
-  }
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    // Required fields
-    if (!email.value || !nameInput.value || !age.value || !address.value) {
-      showToast("Missing info", "Fill out Email, Full Name, Age, and Address.");
-      return;
+    function validEmail(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
     }
 
-    // Email formatting
-    if (!validEmail(email.value)) {
-      showToast("Invalid email", "Enter an email like name@example.com.");
-      return;
-    }
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    // Age, no letters
-    if (isNaN(age.value)) {
-      showToast("Invalid age", "Age must be a number.");
-      return;
-    }
+      if (!email.value || !nameInput.value || !age.value || !address.value) {
+        showToast("Missing info", "Fill out Email, Full Name, Age, and Address.");
+        return;
+      }
 
-const member = {
-  email: email.value.trim(),
-  name: nameInput.value.trim(),
-  phone: phone.value.trim(),
-  age: age.value.trim(),
-  address: address.value.trim(),
-  city: city.value.trim(),
-  state: state.value,
-  zip: zip.value.trim()
-};
+      if (!validEmail(email.value)) {
+        showToast("Invalid email", "Enter an email like name@example.com.");
+        return;
+      }
 
-    // Update or add
-    if (editIndex !== null) {
-      members[editIndex] = member;
-      editIndex = null;
-      showToast("Updated", "Member updated successfully.");
-    } else {
+      if (isNaN(age.value)) {
+        showToast("Invalid age", "Age must be a number.");
+        return;
+      }
+
+      const member = {
+        email: email.value.trim(),
+        name: nameInput.value.trim(),
+        phone: phone.value.trim(),
+        age: age.value.trim(),
+        address: address.value.trim(),
+        city: city.value.trim(),
+        state: state.value,
+        zip: zip.value.trim()
+      };
+
+      // member info action
       members.push(member);
       showToast("Saved", "Member added successfully.");
-    }
 
-    // JSON storage
-    localStorage.setItem("members", JSON.stringify(members));
+      localStorage.setItem("members", JSON.stringify(members));
 
-    form.reset();
-    render();
-  });
-
-  function render() {
-    membersArea.innerHTML = "";
-
-    members.forEach((m, i) => {
-      membersArea.innerHTML += `
-        <div>
-          <strong>${m.name}</strong> (${m.email})<br>
-          Age: ${m.age} | Phone: ${m.phone}<br>
-          Address: ${m.address}<br>
-        </div><hr>
-      `;
+      form.reset();
+      render();
     });
 
-    // JSON for deliverables
-    membersArea.innerHTML += `
-      <h4>Stored JSON</h4>
-      <pre>${JSON.stringify(members, null, 2)}</pre>
-    `;
+    function render() {
+      membersArea.innerHTML = "";
+
+      members.forEach((m) => {
+        membersArea.innerHTML += `
+          <div>
+            <strong>${m.name}</strong> (${m.email})<br>
+            Age: ${m.age} | Phone: ${m.phone}<br>
+            Address: ${m.address}<br>
+            City: ${m.city} | State: ${m.state} | Zip: ${m.zip}
+          </div><hr>
+        `;
+      });
+
+      membersArea.innerHTML += `
+        <h4>Stored JSON</h4>
+        <pre>${JSON.stringify(members, null, 2)}</pre>
+      `;
+    }
+
+    render();
   }
-
-  render();
-
+}
