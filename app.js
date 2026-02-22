@@ -24,7 +24,7 @@
 
   const email = document.getElementById("email");
   const nameInput = document.getElementById("fname");
-  const phone = document.getElementById("number");
+  const phone = document.getElementById("phone");;
   const age = document.getElementById("age");
   const address = document.getElementById("address");
 
