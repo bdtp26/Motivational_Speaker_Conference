@@ -22,6 +22,9 @@
 
   // combination w Brian's HTML
   const form = document.querySelector("form");
+    if (!form) {
+  console.warn("No form found on this page.");
+}
   const membersArea = document.getElementById("membersArea");
     if (!membersArea) return;
 
