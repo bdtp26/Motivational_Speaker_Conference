@@ -20,7 +20,6 @@
 
   // combination w Brian's HTML
   const form = document.querySelector("form");
-  if (!form) return;
   const membersArea = document.getElementById("membersArea");
     if (!membersArea) return;
 
