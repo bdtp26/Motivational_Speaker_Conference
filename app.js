@@ -22,12 +22,16 @@
   const form = document.querySelector("form");
   if (!form) return;
   const membersArea = document.getElementById("membersArea");
+    if (!membersArea) return;
 
   const email = document.getElementById("email");
   const nameInput = document.getElementById("fname");
   const phone = document.getElementById("phone");;
   const age = document.getElementById("age");
   const address = document.getElementById("address");
+  const state = document.getElementById("inputState");
+  const city = document.getElementById("city");
+  const zip = document.getElementById("inputZip");
 
   let members = JSON.parse(localStorage.getItem("members")) || [];
   let editIndex = null;
@@ -58,13 +62,16 @@
       return;
     }
 
-    const member = {
-      email: email.value.trim(),
-      name: nameInput.value.trim(),
-      phone: phone.value.trim(),
-      age: age.value.trim(),
-      address: address.value.trim()
-    };
+const member = {
+  email: email.value.trim(),
+  name: nameInput.value.trim(),
+  phone: phone.value.trim(),
+  age: age.value.trim(),
+  address: address.value.trim(),
+  city: city.value.trim(),
+  state: state.value,
+  zip: zip.value.trim()
+};
 
     // Update or add
     if (editIndex !== null) {
@@ -105,14 +112,6 @@
   }
 
   // Utilizing global
-  window.editMember = function (index) {
-    const m = members[index];
-    email.value = m.email;
-    nameInput.value = m.name;
-    phone.value = m.phone;
-    age.value = m.age;
-    address.value = m.address;
-    editIndex = index;
 
     showToast("Edit mode", "Make changes and click Submit to update.");
   };
