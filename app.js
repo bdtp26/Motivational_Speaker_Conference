@@ -1,4 +1,4 @@
-<script type="module">
+
   import { Toast } from './bootstrap.esm.min.js';
 
   // Bootstrap toast
@@ -20,6 +20,7 @@
 
   // combination w Brian's HTML
   const form = document.querySelector("form");
+  if (!form) return;
   const membersArea = document.getElementById("membersArea");
 
   const email = document.getElementById("email");
@@ -117,4 +118,4 @@
   };
 
   render();
-</script>
+
