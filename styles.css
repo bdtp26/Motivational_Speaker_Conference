@@ -42,6 +42,17 @@ body{
   margin: 0;
 }
 
+/* images */
+.city-photos {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 40px 0;
+}
+
+.city-photos img {
+  width: 30%;
+  height: auto;
+}
 
 /* footer */
 footer{
