@@ -11,6 +11,7 @@ body{
 /* First section of the Homepage */
 .banner {
   color: white;
+  padding: 80px 0;
 }
 
 .banner{
