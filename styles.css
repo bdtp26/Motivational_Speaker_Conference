@@ -46,7 +46,8 @@ body{
 .city-photos {
   display: flex;
   justify-content: space-evenly;
-  margin: 40px 0;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .city-photos img {
