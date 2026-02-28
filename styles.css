@@ -11,11 +11,7 @@ body{
 /* First section of the Homepage */
 .banner {
   color: white;
-  padding: 80px 0;
-}
-
-.banner{
-  background-color: #2c3e50;
+  background-color: #2c3e50; 
   padding: 80px 20px;
 }
 
@@ -47,7 +43,7 @@ body{
   margin: 0;
 }
 
-/* images */
+/* City images on the Homepage */
 .city-photos {
   display: flex;
   justify-content: space-evenly;
