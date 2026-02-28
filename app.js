@@ -10,7 +10,7 @@ function showToast(title, message) {
   
   // Fallback if the toast HTML isn't present yet
   if (!toast) {
-    alert(`${title}: ${message}`);
+  alert(`${title}: ${message}`);
     return;
   }
   toastTitleEl.textContent = title;
@@ -59,7 +59,8 @@ if (!form) {
     const city = document.getElementById("city");
     const zip = document.getElementById("inputZip");
 
-        let members = [];
+        let members = JSON.parse(localStorage.getItem("members")) || [];
+render();
 
     function validEmail(v) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
@@ -105,12 +106,12 @@ if (!form) {
     });
 
     function render() {
-      membersArea.innerHTML = "";
+  membersArea.innerHTML = "";
 
-      members.forEach((m) => {
-        membersArea.innerHTML += ``;
-      });
-
+  members.forEach((m) => {
+    membersArea.innerHTML += `<p>${m.name} (${m.email})</p>`;
+  });
+}
 membersArea.innerHTML += ``;
       `;
     }
