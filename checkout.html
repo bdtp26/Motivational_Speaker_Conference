@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkout</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+<body class="p-4">
+
+  <h1 class="mb-3">Checkout</h1>
+  <p class="text-muted">Review your ticket selections below.</p>
+
+  <div id="checkoutList" class="mb-4"></div>
+
+  <a href="index.html" class="btn btn-secondary">Back</a>
+
+  <script>
+    const checkoutList = document.getElementById("checkoutList");
+    const selections = JSON.parse(localStorage.getItem("ticketSelections")) || [];
+
+    if (selections.length === 0) {
+      checkoutList.innerHTML = "<p><strong>No tickets selected.</strong> Go back and choose a ticket.</p>";
+    } else {
+      let html = '<ul class="list-group">';
+      selections.forEach(item => {
+        html += `<li class="list-group-item"><strong>${item.city}</strong> — ${item.ticket}</li>`;
+      });
+      html += "</ul>";
+      checkoutList.innerHTML = html;
+    }
+  </script>
+
+</body>
+</html>
