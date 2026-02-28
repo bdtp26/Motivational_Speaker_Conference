@@ -18,6 +18,29 @@ function showToast(title, message) {
   toast.show();
 }
 
+// Tickets.html form
+const ticketForm = document.getElementById("ticketForm");
+
+if (ticketForm) {
+  ticketForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const nyc = ticketForm.nycTicket.value;
+    const miami = ticketForm.miamiTicket.value;
+    const la = ticketForm.laTicket.value;
+
+    const selections = [];
+
+    if (nyc) selections.push({ city: "New York City", ticket: nyc });
+    if (miami) selections.push({ city: "Miami", ticket: miami });
+    if (la) selections.push({ city: "Los Angeles", ticket: la });
+
+    localStorage.setItem("ticketSelections", JSON.stringify(selections));
+
+    window.location.href = "checkout.html";
+  });
+}
+
 // Brian's form
 const form = document.querySelector("form");
 if (!form) {
