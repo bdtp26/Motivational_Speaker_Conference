@@ -60,6 +60,29 @@ body{
   height: auto;
 }
 
+.city-photos {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.city-card {
+  width: 30%;
+  text-align: center;
+}
+
+.city-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.city-card select {
+  margin-top: 10px;
+}
+
+
 /* footer */
 footer{
   background-color: #2c3e50;
