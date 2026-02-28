@@ -14,54 +14,58 @@
 </head>
 
   <body style="background-color: #c9cac8;">
-<!-- Images-->
-<div class="city-photos">
-    <img src="NewYorkSkyline.jpg" alt="New York City skyline">
-    <img src="MiamiSkyline.jpg" alt="Miami skyline">
-    <img src="LosAngelesSkyline.jpg" alt="Los Angeles skyline">
+
+<!-- City Tickets -->
+<div class="container my-4">
+  <form id="ticketForm">
+    <div class="city-photos">
+
+      <div class="city-card">
+        <img src="NewYorkSkyline.jpg" alt="New York City skyline">
+        <h4>New York City</h4>
+        <p>June 20–23, 2023</p>
+
+        <select class="form-select" name="nycTicket">
+          <option value="">Select a ticket...</option>
+          <option value="1-Day Pass">1-Day Pass</option>
+          <option value="Weekend Pass">Weekend Pass</option>
+          <option value="VIP Pass">VIP Pass</option>
+        </select>
+      </div>
+
+      <div class="city-card">
+        <img src="MiamiSkyline.jpg" alt="Miami skyline">
+        <h4>Miami</h4>
+        <p>July 12–15, 2023</p>
+
+        <select class="form-select" name="miamiTicket">
+          <option value="">Select a ticket...</option>
+          <option value="1-Day Pass">1-Day Pass</option>
+          <option value="Weekend Pass">Weekend Pass</option>
+          <option value="VIP Pass">VIP Pass</option>
+        </select>
+      </div>
+
+      <div class="city-card">
+        <img src="LosAngelesSkyline.jpg" alt="Los Angeles skyline">
+        <h4>Los Angeles</h4>
+        <p>August 5–8, 2023</p>
+
+        <select class="form-select" name="laTicket">
+          <option value="">Select a ticket...</option>
+          <option value="1-Day Pass">1-Day Pass</option>
+          <option value="Weekend Pass">Weekend Pass</option>
+          <option value="VIP Pass">VIP Pass</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-warning btn-lg">Go to Checkout</button>
+    </div>
+  </form>
 </div>
-
- <!--- Section for conference registration, created by Brian Tucker --> 
-<table>
-<tr>
-  <td>
-  <div class="mb-3">
- <label for="selectPass" class="form-label" style="margin-top: 20px; margin-left: 30px; margin-bottom: 6px;">Ticket Type:</label>
-    <select id="selectPass" class="form-select" style="width: 105px; display: inline-block;">
-     <option value=""></option>
-    <option value="Day">1 Day</option>
-    <option value="Weekend">Weekend</option>
-     </select>
-</div>
-    <p>Select 1 day ticket, weekend pass or VIP pass.</p>
-  </td>
-</tr>
-<tr>
-<td>
-<label for="selectCity" class="form-label" style="margin-top: 20px; margin-left: 30px; margin-bottom: 6px;">City:</label>
-    <select id="selectPass" class="form-select" style="width: 120px; display: inline-block;">
-     <option value=""></option>
-    <option value="Day">New York</option>
-    <option value="Weekend">Miami</option>
-      <option value="Weekend">Los Angeles</option>
-     </select>
-  <p>....</p>
-  
-</td>
-  
-</tr>
-  
-</table>  
-
-       
-
-
-
-
-<div class="mb-3">
-  <button type="submit" style="margin-left: 50px; margin-bottom: 6px;">Submit</button>
-  <input type="reset" value="Reset Form">
-  </div>
    
 <!-- Footer -->
   <footer>
