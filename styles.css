@@ -55,11 +55,6 @@ body{
   flex-wrap: wrap;
 }
 
-.city-photos img {
-  width: 30%;
-  height: auto;
-}
-
 .city-photos {
   display: flex;
   justify-content: space-evenly;
