@@ -70,11 +70,19 @@
 <script>
 $(function () {
   // JSON store  - local storage push
-  let products = JSON.parse(localStorage.getItem("products")) || [
-    { id: "NYC-1DAY", title: "NYC 1-Day Pass", category: "NYC", unit: "Pass", price: "40", info: "Pick any single day" },
-    { id: "NYC-WEND", title: "NYC Weekend Pass", category: "NYC", unit: "Pass", price: "80", info: "Attend full event" },
-    { id: "NYC-VIP",  title: "NYC VIP Pass", category: "NYC", unit: "Pass", price: "120", info: "All-access + food & drinks" }
-  ];
+let products = JSON.parse(localStorage.getItem("products")) || [
+  { id: "NYC-1DAY", title: "NYC 1-Day Pass", category: "NYC", unit: "Pass", price: "40", info: "Pick any single day" },
+  { id: "NYC-WEND", title: "NYC Weekend Pass", category: "NYC", unit: "Pass", price: "80", info: "Attend full event" },
+  { id: "NYC-VIP",  title: "NYC VIP Pass", category: "NYC", unit: "Pass", price: "120", info: "All-access + food & drinks" },
+
+  { id: "MIA-1DAY", title: "Miami 1-Day Pass", category: "Miami", unit: "Pass", price: "40", info: "Pick any single day" },
+  { id: "MIA-WEND", title: "Miami Weekend Pass", category: "Miami", unit: "Pass", price: "80", info: "Attend full event" },
+  { id: "MIA-VIP",  title: "Miami VIP Pass", category: "Miami", unit: "Pass", price: "120", info: "All-access + food & drinks" },
+
+  { id: "LA-1DAY", title: "LA 1-Day Pass", category: "LA", unit: "Pass", price: "40", info: "Pick any single day" },
+  { id: "LA-WEND", title: "LA Weekend Pass", category: "LA", unit: "Pass", price: "80", info: "Attend full event" },
+  { id: "LA-VIP",  title: "LA VIP Pass", category: "LA", unit: "Pass", price: "120", info: "All-access + food & drinks" }
+];
 
   function save() {
     localStorage.setItem("products", JSON.stringify(products));
