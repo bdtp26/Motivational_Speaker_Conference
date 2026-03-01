@@ -1,3 +1,5 @@
+<!--- Changed this in order to try a more minimal approach 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +30,31 @@
       html += "</ul>";
       checkoutList.innerHTML = html;
     }
+  </script> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkout</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+<body class="p-4">
+  <h1>Checkout</h1>
+  <div id="out"></div>
+
+  <script>
+    const selections = JSON.parse(localStorage.getItem("ticketSelections")) || [];
+    const out = document.getElementById("out");
+
+    if (selections.length === 0) {
+      out.innerHTML = "<p><strong>No tickets selected.</strong></p>";
+    } else {
+      out.innerHTML = "<ul>" + selections.map(x => `<li>${x.city} — ${x.ticket}</li>`).join("") + "</ul>";
+    }
   </script>
+</body>
+</html>
 
 </body>
 </html>
