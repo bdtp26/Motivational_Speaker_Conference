@@ -105,17 +105,110 @@ render();
        render();
     });
 
-    function render() {
+function render() {
   membersArea.innerHTML = "";
-
   members.forEach((m) => {
     membersArea.innerHTML += `<p>${m.name} (${m.email})</p>`;
   });
 }
-membersArea.innerHTML += ``;
-      `;
-    }
 
    
   }
 }
+
+
+// Product Management jQuery + JSON (localStorage) + search + update
+$(function () {
+  // For tickets.html -- only place that has products
+  if (!document.getElementById("productForm")) return;
+
+  let products = JSON.parse(localStorage.getItem("products")) || [
+    { id: "NYC-1DAY", title: "NYC 1-Day Pass", category: "NYC", unit: "Pass", price: "40", info: "Pick any single day" },
+    { id: "NYC-WEND", title: "NYC Weekend Pass", category: "NYC", unit: "Pass", price: "80", info: "Full event access" },
+    { id: "NYC-VIP", title: "NYC VIP Pass", category: "NYC", unit: "Pass", price: "120", info: "All-access + food & drinks" }
+  ];
+
+  function saveProducts() {
+    localStorage.setItem("products", JSON.stringify(products));
+  }
+
+  function renderProducts(list) {
+    $("#productCards").html("");
+
+    list.forEach(p => {
+      $("#productCards").append(`
+        <div class="product-card">
+          <strong>${p.title}</strong><br>
+          ID: ${p.id}<br>
+          Category: ${p.category}<br>
+          Unit: ${p.unit}<br>
+          Price: $${p.price}<br>
+          ${p.info ? "Info: " + p.info + "<br>" : ""}
+          <button class="editBtn" data-id="${p.id}">Edit</button>
+        </div>
+      `);
+    });
+
+    $("#productsJson").text(JSON.stringify(products, null, 2));
+  }
+
+  saveProducts();
+  renderProducts(products);
+
+  // Create/Update w field validation
+  $("#productForm").on("submit", function (e) {
+    e.preventDefault();
+
+    const p = {
+      id: $("#prodId").val().trim(),
+      title: $("#prodTitle").val().trim(),
+      category: $("#prodCategory").val().trim(),
+      unit: $("#prodUnit").val().trim(),
+      price: $("#prodPrice").val().trim(),
+      info: $("#prodInfo").val().trim()
+    };
+
+    // Simple extra validation: price must be a number
+    if (isNaN(p.price)) {
+      alert("Price must be a number.");
+      return;
+    }
+
+    const idx = products.findIndex(x => x.id === p.id);
+    if (idx >= 0) products[idx] = p; else products.push(p);
+
+    saveProducts();
+    this.reset();
+    renderProducts(products);
+  });
+
+  // jQuery search
+  $("#searchBox").on("keyup", function () {
+    const q = $(this).val().toLowerCase();
+    const filtered = products.filter(p =>
+      p.id.toLowerCase().includes(q) ||
+      p.title.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q)
+    );
+    renderProducts(filtered);
+  });
+
+  $("#clearSearch").on("click", function () {
+    $("#searchBox").val("");
+    renderProducts(products);
+  });
+
+  // jQuery update -- edit loads product
+  $("#productCards").on("click", ".editBtn", function () {
+    const id = $(this).data("id");
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+
+    $("#prodId").val(p.id);
+    $("#prodTitle").val(p.title);
+    $("#prodCategory").val(p.category);
+    $("#prodUnit").val(p.unit);
+    $("#prodPrice").val(p.price);
+    $("#prodInfo").val(p.info);
+  });
+});
