@@ -116,3 +116,36 @@ function render() {
   }
 }
 
+// Sync ticket dropdowns with admin JSON
+document.addEventListener("DOMContentLoaded", function () {
+
+  // Query for tickets
+  const nycSelect = document.querySelector("select[name='nycTicket']");
+  const miamiSelect = document.querySelector("select[name='miamiTicket']");
+  const laSelect = document.querySelector("select[name='laTicket']");
+
+  if (!nycSelect || !miamiSelect || !laSelect) return;
+
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+
+  function populate(select, cityKey) {
+    select.innerHTML = `<option value="">Select a ticket...</option>`;
+
+    products
+      .filter(p => p.category === cityKey)
+      .forEach(p => {
+        select.innerHTML += `
+          <option value="${p.id}">
+            ${p.title} — $${p.price}
+          </option>
+        `;
+        if (p.info) {
+          select.innerHTML += `<option disabled>– ${p.info}</option>`;
+        }
+      });
+  }
+
+  populate(nycSelect, "NYC");
+  populate(miamiSelect, "Miami");
+  populate(laSelect, "LA");
+});
