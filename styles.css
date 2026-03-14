@@ -120,3 +120,49 @@ footer a:hover{
   background-color: #1e1e1e; 
 }
 
+
+/* Shopping cart icon */
+.cart-link {
+  min-width: 95px;
+}
+
+/* Checkout search cards */
+#searchResults .card,
+#productsArea .card,
+#cartItems .card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#searchResults .card:hover,
+#productsArea .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* JSON viewer */
+#jsonViewer {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  background-color: #1e1e1e;
+  min-height: 220px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* mobile utility */
+@media (max-width: 768px) {
+  .city-card {
+    width: 100%;
+  }
+
+  .signup-form .mb-3 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .signup-form label,
+  .signup-form input,
+  .signup-form select {
+    width: 100%;
+  }
+}
