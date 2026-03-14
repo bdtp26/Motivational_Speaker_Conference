@@ -1,3 +1,5 @@
+// Ivory Cathey
+
 // Bootstrap toast
 const toastEl = document.getElementById("msgToast");
 const toastTitleEl = document.getElementById("toastTitle");
