@@ -1,14 +1,10 @@
-// Ivory Cathey
-
 // Bootstrap toast
 const toastEl = document.getElementById("msgToast");
 const toastTitleEl = document.getElementById("toastTitle");
 const toastBodyEl = document.getElementById("toastBody");
 const toast = (toastEl && window.bootstrap) ? new window.bootstrap.Toast(toastEl) : null;
 
-
-  
-  // Fallback if the toast HTML isn't present yet
+// Fallback if the toast HTML isn't present yet
 function showToast(title, message) {
   if (!toast) {
     alert(`${title}: ${message}`);
@@ -19,7 +15,7 @@ function showToast(title, message) {
   toast.show();
 }
 
-// Tickets.html form
+// Initialize products
 function initializeProducts() {
   let products = JSON.parse(localStorage.getItem("products"));
 
@@ -27,22 +23,22 @@ function initializeProducts() {
     products = [
       { id: "NYC-1DAY", title: "NYC 1-Day Pass", category: "NYC", unit: "Pass", price: 40, info: "Pick any single day" },
       { id: "NYC-WEND", title: "NYC Weekend Pass", category: "NYC", unit: "Pass", price: 80, info: "Attend full event" },
-      { id: "NYC-VIP",  title: "NYC VIP Pass", category: "NYC", unit: "Pass", price: 120, info: "All-access + food & drinks" },
+      { id: "NYC-VIP", title: "NYC VIP Pass", category: "NYC", unit: "Pass", price: 120, info: "All-access + food & drinks" },
 
       { id: "MIA-1DAY", title: "Miami 1-Day Pass", category: "Miami", unit: "Pass", price: 40, info: "Pick any single day" },
       { id: "MIA-WEND", title: "Miami Weekend Pass", category: "Miami", unit: "Pass", price: 80, info: "Attend full event" },
-      { id: "MIA-VIP",  title: "Miami VIP Pass", category: "Miami", unit: "Pass", price: 120, info: "All-access + food & drinks" },
+      { id: "MIA-VIP", title: "Miami VIP Pass", category: "Miami", unit: "Pass", price: 120, info: "All-access + food & drinks" },
 
       { id: "LA-1DAY", title: "LA 1-Day Pass", category: "LA", unit: "Pass", price: 40, info: "Pick any single day" },
       { id: "LA-WEND", title: "LA Weekend Pass", category: "LA", unit: "Pass", price: 80, info: "Attend full event" },
-      { id: "LA-VIP",  title: "LA VIP Pass", category: "LA", unit: "Pass", price: 120, info: "All-access + food & drinks" }
+      { id: "LA-VIP", title: "LA VIP Pass", category: "LA", unit: "Pass", price: 120, info: "All-access + food & drinks" }
     ];
 
     localStorage.setItem("products", JSON.stringify(products));
   }
 }
 
-// cart
+// Cart functions
 function getCart() {
   return JSON.parse(localStorage.getItem("cart")) || [];
 }
@@ -82,7 +78,7 @@ function addToCart(product) {
   saveCart(cart);
 }
 
-// tix
+// Populate ticket dropdowns
 function populateTicketDropdowns() {
   const products = JSON.parse(localStorage.getItem("products")) || [];
 
@@ -111,6 +107,7 @@ function populateTicketDropdowns() {
   populate(laSelect, ["LA", "Los Angeles"]);
 }
 
+// Tickets page form
 function setupTicketForm() {
   const ticketForm = document.getElementById("ticketForm");
   if (!ticketForm) return;
@@ -147,7 +144,8 @@ function setupTicketForm() {
     window.location.href = "checkout.html";
   });
 }
-// signup
+
+// Signup page form
 function setupSignupForm() {
   const signupForm = document.querySelector(".signup-form");
   if (!signupForm) return;
@@ -212,13 +210,10 @@ function setupSignupForm() {
   });
 }
 
-// starttup / dynamic listening
+// Startup
 document.addEventListener("DOMContentLoaded", function () {
   initializeProducts();
   updateCartCount();
   setupTicketForm();
   setupSignupForm();
-});
-  populate(miamiSelect, "Miami");
-  populate(laSelect, "LA");
 });
