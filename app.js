@@ -90,13 +90,13 @@ function populateTicketDropdowns() {
   const miamiSelect = document.querySelector("select[name='miamiTicket']");
   const laSelect = document.querySelector("select[name='laTicket']");
 
-  function populate(select, cityKey) {
+  function populate(select, cityKeys) {
     if (!select) return;
 
     select.innerHTML = `<option value="">Select a ticket...</option>`;
 
     products
-      .filter(product => product.category === cityKey)
+      .filter(product => cityKeys.includes(product.category))
       .forEach(product => {
         select.innerHTML += `
           <option value="${product.id}">
@@ -106,9 +106,9 @@ function populateTicketDropdowns() {
       });
   }
 
-  populate(nycSelect, "NYC");
-  populate(miamiSelect, "Miami");
-  populate(laSelect, "LA");
+  populate(nycSelect, ["NYC", "New York", "New York City"]);
+  populate(miamiSelect, ["Miami", "MIA"]);
+  populate(laSelect, ["LA", "Los Angeles"]);
 }
 
 function setupTicketForm() {
