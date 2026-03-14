@@ -142,7 +142,7 @@ footer a:hover {
 }
 
 /* JSON viewer */
-#jsonViewer {
+#jsonOut {
   font-family: "Courier New", Courier, monospace;
   font-size: 13px;
   background-color: #1e1e1e;
