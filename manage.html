@@ -86,7 +86,6 @@ let products = JSON.parse(localStorage.getItem("products")) || [
 
   function save() {
     localStorage.setItem("products", JSON.stringify(products));
-    $("#jsonOut").text(JSON.stringify(products, null, 2));
   }
 
   function render(list) {
