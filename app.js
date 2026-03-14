@@ -122,10 +122,14 @@ function setupTicketForm() {
 
     const products = JSON.parse(localStorage.getItem("products")) || [];
 
+    const nycSelect = document.querySelector("select[name='nycTicket']");
+    const miamiSelect = document.querySelector("select[name='miamiTicket']");
+    const laSelect = document.querySelector("select[name='laTicket']");
+
     const selectedIds = [
-      ticketForm.nycTicket.value,
-      ticketForm.miamiTicket.value,
-      ticketForm.laTicket.value
+      nycSelect ? nycSelect.value : "",
+      miamiSelect ? miamiSelect.value : "",
+      laSelect ? laSelect.value : ""
     ].filter(value => value !== "");
 
     if (selectedIds.length === 0) {
@@ -140,11 +144,9 @@ function setupTicketForm() {
       }
     });
 
-    showToast("Cart Updated", "Ticket(s) added to cart.");
     window.location.href = "checkout.html";
   });
 }
-
 // signup
 function setupSignupForm() {
   const signupForm = document.querySelector(".signup-form");
