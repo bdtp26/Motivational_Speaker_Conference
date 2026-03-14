@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="styles.css">
 
-  <!-- jQuery scrip -->
+  <!-- jQuery script -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
@@ -65,27 +65,46 @@
   <!-- DYNAMIC DISPLAY -->
   <div id="productsArea" class="row mt-4 g-3"></div>
 
+  <!-- JSON preview and AJAX -->
+  <div class="row mt-4 g-4">
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h4>JSON Preview</h4>
+        <pre id="jsonOut" class="p-3 text-light rounded mb-0"></pre>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h4>Send Product Data to API</h4>
+        <p class="text-muted mb-3">This uses AJAX with a placeholder endpoint for the assignment.</p>
+        <button id="sendApiBtn" class="btn btn-primary" type="button">Send JSON with AJAX</button>
+        <div id="apiStatus" class="mt-3"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
 $(function () {
-  // JSON store  - local storage push
-let products = JSON.parse(localStorage.getItem("products")) || [
-  { id: "NYC-1DAY", title: "NYC 1-Day Pass", category: "NYC", unit: "Pass", price: "40", info: "Pick any single day" },
-  { id: "NYC-WEND", title: "NYC Weekend Pass", category: "NYC", unit: "Pass", price: "80", info: "Attend full event" },
-  { id: "NYC-VIP",  title: "NYC VIP Pass", category: "NYC", unit: "Pass", price: "120", info: "All-access + food & drinks" },
+  // JSON store - local storage push
+  let products = JSON.parse(localStorage.getItem("products")) || [
+    { id: "NYC-1DAY", title: "NYC 1-Day Pass", category: "NYC", unit: "Pass", price: "40", info: "Pick any single day" },
+    { id: "NYC-WEND", title: "NYC Weekend Pass", category: "NYC", unit: "Pass", price: "80", info: "Attend full event" },
+    { id: "NYC-VIP",  title: "NYC VIP Pass", category: "NYC", unit: "Pass", price: "120", info: "All-access + food & drinks" },
 
-  { id: "MIA-1DAY", title: "Miami 1-Day Pass", category: "Miami", unit: "Pass", price: "40", info: "Pick any single day" },
-  { id: "MIA-WEND", title: "Miami Weekend Pass", category: "Miami", unit: "Pass", price: "80", info: "Attend full event" },
-  { id: "MIA-VIP",  title: "Miami VIP Pass", category: "Miami", unit: "Pass", price: "120", info: "All-access + food & drinks" },
+    { id: "MIA-1DAY", title: "Miami 1-Day Pass", category: "Miami", unit: "Pass", price: "40", info: "Pick any single day" },
+    { id: "MIA-WEND", title: "Miami Weekend Pass", category: "Miami", unit: "Pass", price: "80", info: "Attend full event" },
+    { id: "MIA-VIP",  title: "Miami VIP Pass", category: "Miami", unit: "Pass", price: "120", info: "All-access + food & drinks" },
 
-  { id: "LA-1DAY", title: "LA 1-Day Pass", category: "LA", unit: "Pass", price: "40", info: "Pick any single day" },
-  { id: "LA-WEND", title: "LA Weekend Pass", category: "LA", unit: "Pass", price: "80", info: "Attend full event" },
-  { id: "LA-VIP",  title: "LA VIP Pass", category: "LA", unit: "Pass", price: "120", info: "All-access + food & drinks" }
-];
+    { id: "LA-1DAY", title: "LA 1-Day Pass", category: "LA", unit: "Pass", price: "40", info: "Pick any single day" },
+    { id: "LA-WEND", title: "LA Weekend Pass", category: "LA", unit: "Pass", price: "80", info: "Attend full event" },
+    { id: "LA-VIP",  title: "LA VIP Pass", category: "LA", unit: "Pass", price: "120", info: "All-access + food & drinks" }
+  ];
 
   function save() {
     localStorage.setItem("products", JSON.stringify(products));
+    $("#jsonOut").text(JSON.stringify(products, null, 2));
   }
 
   function render(list) {
@@ -124,14 +143,17 @@ let products = JSON.parse(localStorage.getItem("products")) || [
       info: $("#pInfo").val().trim()
     };
 
-    if (isNaN(p.price)) {
+    if (isNaN(p.price) || p.price === "") {
       alert("Price must be a number.");
       return;
     }
 
     const idx = products.findIndex(x => x.id === p.id);
-    if (idx >= 0) products[idx] = p;
-    else products.push(p);
+    if (idx >= 0) {
+      products[idx] = p;
+    } else {
+      products.push(p);
+    }
 
     save();
     render(products);
@@ -166,6 +188,22 @@ let products = JSON.parse(localStorage.getItem("products")) || [
     $("#pUnit").val(p.unit);
     $("#pPrice").val(p.price);
     $("#pInfo").val(p.info);
+  });
+
+  // AJAX send
+  $("#sendApiBtn").on("click", function () {
+    $.ajax({
+      url: "https://jsonplaceholder.typicode.com/posts",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(products),
+      success: function (response) {
+        $("#apiStatus").html(`<span class="text-success">JSON sent successfully. Response ID: ${response.id}</span>`);
+      },
+      error: function () {
+        $("#apiStatus").html(`<span class="text-danger">Could not send JSON to API endpoint.</span>`);
+      }
+    });
   });
 });
 </script>
