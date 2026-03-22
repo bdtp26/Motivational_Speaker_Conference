@@ -149,7 +149,7 @@ function setupTicketForm() {
 
 // Signup page form
 function setupSignupForm() {
-  const signupForm = document.querySelector(".signup-form");
+  const signupForm = document.getElementById("signupForm");
   if (!signupForm) return;
 
   const email = document.getElementById("email");
@@ -160,12 +160,13 @@ function setupSignupForm() {
   const city = document.getElementById("city");
   const state = document.getElementById("inputState");
   const zip = document.getElementById("inputZip");
+  const participationType = document.querySelector("select[name='participationType']");
 
   function validEmail(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
   }
 
-  signupForm.addEventListener("submit", function (e) {
+  signupForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     if (
@@ -191,24 +192,62 @@ function setupSignupForm() {
       return;
     }
 
-    const members = JSON.parse(localStorage.getItem("members")) || [];
+    const selectedSessions = Array.from(
+      document.querySelectorAll("input[type='checkbox']:checked")
+    ).map(box => box.value);
 
     const member = {
-      name: nameInput.value.trim(),
+      fullName: nameInput.value.trim(),
       email: email.value.trim(),
       phone: phone.value.trim(),
-      age: age.value.trim(),
+      age: Number(age.value),
       address: address.value.trim(),
       city: city.value.trim(),
       state: state.value.trim(),
-      zip: zip.value.trim()
+      zip: zip.value.trim(),
+      participationType: participationType ? participationType.value : "",
+      sessions: selectedSessions,
+      submittedAt: new Date().toISOString()
     };
 
+    const members = JSON.parse(localStorage.getItem("members")) || [];
     members.push(member);
     localStorage.setItem("members", JSON.stringify(members));
 
-    showToast("Success", "Sign-up submitted successfully.");
-    signupForm.reset();
+    const jsonString = JSON.stringify(member, null, 2);
+    const jsonOut = document.getElementById("jsonOut");
+    if (jsonOut) {
+      jsonOut.textContent = jsonString;
+    }
+
+    const ajaxStatus = document.getElementById("ajaxStatus");
+    if (ajaxStatus) {
+      ajaxStatus.textContent = "Sending...";
+    }
+
+    try {
+      const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: jsonString
+      });
+
+      const result = await response.json();
+
+      if (ajaxStatus) {
+        ajaxStatus.textContent = "Success! Data prepared and sent with AJAX. Response ID: " + result.id;
+      }
+
+      showToast("Success", "Sign-up submitted successfully.");
+      signupForm.reset();
+    } catch (error) {
+      if (ajaxStatus) {
+        ajaxStatus.textContent = "AJAX request failed.";
+      }
+      showToast("Error", "Could not send data.");
+    }
   });
 }
 
