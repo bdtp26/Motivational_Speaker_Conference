@@ -250,7 +250,14 @@ function setupSignupForm() {
     }
   });
 }
+if (window.angular) {
+  const app = angular.module("conferenceApp", []);
 
+  app.controller("SignupController", function ($scope) {
+    $scope.jsonPreview = "{\n  \"message\": \"Submit the form to generate JSON\"\n}";
+    $scope.ajaxStatus = "Waiting for submission...";
+  });
+}
 // Startup
 document.addEventListener("DOMContentLoaded", function () {
   initializeProducts();
