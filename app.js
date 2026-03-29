@@ -7,7 +7,7 @@ const toast = (toastEl && window.bootstrap) ? new window.bootstrap.Toast(toastEl
 
 function showToast(title, message) {
   if (!toast) {
-    alert(`${title}: ${message}`);
+    alert(title + ": " + message);
     return;
   }
   toastTitleEl.textContent = title;
@@ -126,7 +126,7 @@ function setupTicketForm() {
     ].filter(value => value !== "");
 
     if (selectedIds.length === 0) {
-      showToast("No Tickets Selected", "Please select at least one ticket.");
+      showToast("Error", "Please select at least one ticket.");
       return;
     }
 
@@ -136,89 +136,6 @@ function setupTicketForm() {
     });
 
     window.location.href = "checkout.html";
-  });
-}
-
-function setupSignupForm() {
-  const signupForm = document.getElementById("signupForm");
-  const pageTitle = document.querySelector("h2");
-  if (!signupForm || !pageTitle || !pageTitle.textContent.toLowerCase().includes("sign up")) return;
-
-  const email = document.getElementById("email");
-  const nameInput = document.getElementById("fname");
-  const phone = document.getElementById("phone");
-  const participationType = document.getElementById("participationType");
-
-  function validEmail(value) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
-  }
-
-  signupForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    if (!nameInput.value.trim() || !email.value.trim() || !participationType.value.trim()) {
-      showToast("Missing Information", "Please fill out all required fields.");
-      return;
-    }
-
-    if (!validEmail(email.value)) {
-      showToast("Invalid Email", "Please enter a valid email address.");
-      return;
-    }
-
-    const selectedSessions = Array.from(
-      document.querySelectorAll("input[name='session']:checked")
-    ).map(box => box.value);
-
-    const member = {
-      fullName: nameInput.value.trim(),
-      email: email.value.trim(),
-      phone: phone.value.trim(),
-      participationType: participationType.value.trim(),
-      sessions: selectedSessions,
-      submittedAt: new Date().toISOString()
-    };
-
-    const members = JSON.parse(localStorage.getItem("members")) || [];
-    members.push(member);
-    localStorage.setItem("members", JSON.stringify(members));
-
-    const jsonString = JSON.stringify(member, null, 2);
-    const jsonOut = document.getElementById("jsonOut");
-    if (jsonOut) jsonOut.textContent = jsonString;
-
-    const ajaxStatus = document.getElementById("ajaxStatus");
-    if (ajaxStatus) ajaxStatus.textContent = "Sending...";
-
-    try {
-      const response = await fetch("http://localhost:3000/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: jsonString
-      });
-
-      const result = await response.json();
-
-      if (ajaxStatus) {
-        ajaxStatus.textContent = "Success! Sign-up sent to backend. Response ID: " + result.id;
-      }
-
-      if (window.angular) {
-        const scope = angular.element(document.body).scope();
-        if (scope) {
-          scope.$applyAsync(() => {
-            scope.jsonPreview = jsonString;
-            scope.ajaxStatus = "Success! Sign-up sent to backend. Response ID: " + result.id;
-          });
-        }
-      }
-
-      showToast("Success", "Sign-up submitted successfully.");
-      signupForm.reset();
-    } catch (error) {
-      if (ajaxStatus) ajaxStatus.textContent = "AJAX request failed.";
-      showToast("Error", "Could not send data.");
-    }
   });
 }
 
@@ -281,7 +198,6 @@ function renderCartPage() {
     summaryArea.innerHTML = `
       <p><strong>Items:</strong> ${itemCount}</p>
       <p><strong>Total:</strong> $${total.toFixed(2)}</p>
-      <p class="small text-muted mb-0">Complete the billing form to submit your order details.</p>
     `;
   }
 
@@ -309,12 +225,24 @@ function setupBillingForm() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
   }
 
+  function lettersOnly(value) {
+    return /^[A-Za-z\s]+$/.test(value.trim());
+  }
+
+  function numbersOnly(value) {
+    return /^\d+$/.test(value.trim());
+  }
+
+  function zipValid(value) {
+    return /^\d{5}$/.test(value.trim());
+  }
+
   billingForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const cart = getCart();
     if (cart.length === 0) {
-      showToast("Cart Empty", "Please add ticket products before submitting billing details.");
+      showToast("Error", "Cart is empty.");
       return;
     }
 
@@ -334,28 +262,56 @@ function setupBillingForm() {
       submittedAt: new Date().toISOString()
     };
 
-    if (
-      !billing.fullName || !billing.email || !billing.address || !billing.city ||
-      !billing.state || !billing.zip || !billing.cardType || !billing.cardNumber ||
-      !billing.cardExp || !billing.code
-    ) {
-      showToast("Missing Information", "Please complete all required billing fields.");
+    if (!billing.fullName) {
+      showToast("Error", "Full name is required.");
       return;
     }
 
     if (!validEmail(billing.email)) {
-      showToast("Invalid Email", "Please enter a valid billing email address.");
+      showToast("Error", "Invalid email.");
+      return;
+    }
+
+    if (!billing.address) {
+      showToast("Error", "Address required.");
+      return;
+    }
+
+    if (!lettersOnly(billing.city)) {
+      showToast("Error", "City must be letters only.");
+      return;
+    }
+
+    if (!billing.state) {
+      showToast("Error", "Select a state.");
+      return;
+    }
+
+    if (!zipValid(billing.zip)) {
+      showToast("Error", "Zip must be 5 digits.");
+      return;
+    }
+
+    if (!numbersOnly(billing.cardNumber)) {
+      showToast("Error", "Card number must be numeric.");
+      return;
+    }
+
+    if (!billing.cardExp) {
+      showToast("Error", "Expiration required.");
+      return;
+    }
+
+    if (!numbersOnly(billing.code) || (billing.code.length !== 3 && billing.code.length !== 4)) {
+      showToast("Error", "Invalid security code.");
       return;
     }
 
     const jsonString = JSON.stringify(billing, null, 2);
     localStorage.setItem("billingDetails", jsonString);
 
-    const jsonOut = document.getElementById("billingJsonOut");
-    if (jsonOut) jsonOut.textContent = jsonString;
-
     const ajaxStatus = document.getElementById("billingAjaxStatus");
-    if (ajaxStatus) ajaxStatus.textContent = "Sending billing details...";
+    if (ajaxStatus) ajaxStatus.textContent = "Sending...";
 
     try {
       const response = await fetch("http://localhost:3000/api/billing", {
@@ -367,183 +323,14 @@ function setupBillingForm() {
       const result = await response.json();
 
       if (ajaxStatus) {
-        ajaxStatus.textContent = "Success! Billing details sent to backend. Response ID: " + result.id;
+        ajaxStatus.textContent = "Success ID: " + result.id;
       }
 
-      if (window.angular) {
-        const scope = angular.element(document.body).scope();
-        if (scope) {
-          scope.$applyAsync(() => {
-            scope.billingJsonPreview = jsonString;
-            scope.billingAjaxStatus = "Success! Billing details sent to backend. Response ID: " + result.id;
-          });
-        }
-      }
-
-      showToast("Success", "Billing details submitted successfully.");
+      showToast("Success", "Billing submitted.");
     } catch (error) {
-      if (ajaxStatus) ajaxStatus.textContent = "AJAX request failed.";
-      showToast("Error", "Could not send billing details.");
+      if (ajaxStatus) ajaxStatus.textContent = "Failed";
+      showToast("Error", "Submission failed.");
     }
-  });
-}
-
-function setupReturnsPage() {
-  const returnsForm = document.getElementById("returnsForm");
-  const productsArea = document.getElementById("returnProductsArea");
-  const searchBox = document.getElementById("returnSearchBox");
-  const clearBtn = document.getElementById("clearReturnSearchBtn");
-  if (!returnsForm || !productsArea || !searchBox || !clearBtn) return;
-
-  const products = JSON.parse(localStorage.getItem("products")) || [];
-
-  function renderProducts(list) {
-    productsArea.innerHTML = "";
-    if (list.length === 0) {
-      productsArea.innerHTML = `<p class="text-muted mb-0">No matching products found.</p>`;
-      return;
-    }
-
-    list.forEach(product => {
-      productsArea.innerHTML += `
-        <div class="col-md-6">
-          <div class="card p-3 h-100">
-            <img src="${product.image || ''}" alt="${product.title}" class="img-fluid rounded mb-3 return-product-image">
-            <h5>${product.title}</h5>
-            <div><strong>ID:</strong> ${product.id}</div>
-            <div><strong>City:</strong> ${product.category}</div>
-            <div><strong>Price:</strong> $${Number(product.price).toFixed(2)}</div>
-            <button class="btn btn-outline-primary mt-3 select-return-product"
-              data-id="${product.id}"
-              data-title="${product.title}"
-              data-price="$${Number(product.price).toFixed(2)}"
-              data-image="${product.image || ''}">
-              Select Product
-            </button>
-          </div>
-        </div>
-      `;
-    });
-  }
-
-  renderProducts(products);
-
-  $(searchBox).on("keyup", function () {
-    const q = $(this).val().toLowerCase();
-    const filtered = products.filter(p =>
-      p.id.toLowerCase().includes(q) ||
-      p.title.toLowerCase().includes(q) ||
-      p.category.toLowerCase().includes(q)
-    );
-    renderProducts(filtered);
-  });
-
-  $(clearBtn).on("click", function () {
-    $("#returnSearchBox").val("");
-    renderProducts(products);
-  });
-
-  productsArea.addEventListener("click", function (e) {
-    if (!e.target.classList.contains("select-return-product")) return;
-
-    const productName = e.target.getAttribute("data-title");
-    const price = e.target.getAttribute("data-price");
-    const image = e.target.getAttribute("data-image");
-
-    document.getElementById("selectedReturnProduct").value = productName;
-    document.getElementById("selectedReturnPrice").value = price;
-
-    if (window.angular) {
-      const scope = angular.element(document.body).scope();
-      if (scope) {
-        scope.$applyAsync(() => {
-          scope.returnForm.productName = productName;
-          scope.returnForm.price = price;
-          scope.returnForm.image = image;
-        });
-      }
-    }
-  });
-
-  returnsForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const returnRequest = {
-      fullName: document.getElementById("returnName").value.trim(),
-      email: document.getElementById("returnEmail").value.trim(),
-      productName: document.getElementById("selectedReturnProduct").value.trim(),
-      price: document.getElementById("selectedReturnPrice").value.trim(),
-      reason: document.getElementById("returnReason").value.trim(),
-      condition: document.getElementById("productCondition").value.trim(),
-      details: document.getElementById("returnDetails").value.trim(),
-      submittedAt: new Date().toISOString()
-    };
-
-    if (!returnRequest.fullName || !returnRequest.email || !returnRequest.productName || !returnRequest.reason || !returnRequest.condition) {
-      showToast("Missing Information", "Please complete all required return fields.");
-      return;
-    }
-
-    const jsonString = JSON.stringify(returnRequest, null, 2);
-    localStorage.setItem("returnRequest", jsonString);
-
-    const jsonOut = document.getElementById("returnsJsonOut");
-    if (jsonOut) jsonOut.textContent = jsonString;
-
-    const ajaxStatus = document.getElementById("returnsAjaxStatus");
-    if (ajaxStatus) ajaxStatus.textContent = "Sending return request...";
-
-    try {
-      const response = await fetch("http://localhost:3000/api/returns", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: jsonString
-      });
-
-      const result = await response.json();
-
-      if (ajaxStatus) {
-        ajaxStatus.textContent = "Success! Return request sent to backend. Response ID: " + result.id;
-      }
-
-      if (window.angular) {
-        const scope = angular.element(document.body).scope();
-        if (scope) {
-          scope.$applyAsync(() => {
-            scope.returnsJsonPreview = jsonString;
-            scope.returnsAjaxStatus = "Success! Return request sent to backend. Response ID: " + result.id;
-          });
-        }
-      }
-
-      showToast("Success", "Return request submitted successfully.");
-      returnsForm.reset();
-    } catch (error) {
-      if (ajaxStatus) ajaxStatus.textContent = "AJAX request failed.";
-      showToast("Error", "Could not send return request.");
-    }
-  });
-}
-
-if (window.angular) {
-  const app = angular.module("conferenceApp", []);
-
-  app.controller("SignupController", function ($scope) {
-    $scope.signup = {};
-    $scope.jsonPreview = '{\n  "message": "Submit the form to generate JSON"\n}';
-    $scope.ajaxStatus = "Waiting for submission...";
-  });
-
-  app.controller("CheckoutController", function ($scope) {
-    $scope.billing = {};
-    $scope.billingJsonPreview = '{\n  "message": "Submit billing details to generate JSON"\n}';
-    $scope.billingAjaxStatus = "Waiting for billing submission...";
-  });
-
-  app.controller("ReturnsController", function ($scope) {
-    $scope.returnForm = {};
-    $scope.returnsJsonPreview = '{\n  "message": "Submit a return request to generate JSON"\n}';
-    $scope.returnsAjaxStatus = "Waiting for return submission...";
   });
 }
 
@@ -551,8 +338,6 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeProducts();
   updateCartCount();
   setupTicketForm();
-  setupSignupForm();
   renderCartPage();
   setupBillingForm();
-  setupReturnsPage();
 });
