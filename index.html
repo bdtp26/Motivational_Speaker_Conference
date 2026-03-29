@@ -1,71 +1,70 @@
 <!-- Brian Tucker, Jamie Capone, Ivory Cathey -->
+
 <!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Motivational Speaking Page, Welcome!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-  <!-- Shopping cart link -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="styles.css">
   <script type="module" src="app.js"></script>
-  
 </head>
 <body> 
-<!--Navigation Bar -->
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">IST Conferences</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-<div class="collapse navbar-collapse" id="navbarSupportedContent">
-  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="tickets.html">Tickets</a></li>  
-        <li><a class="dropdown-item" href="signup.html">Sign Up!</a></li>
-         <li><a class="dropdown-item" href="payment.html">Payment</a></li>
-        <li><a class="dropdown-item" href="returns.html">Cancel attendance</a></li>
-        <li><a class="dropdown-item" href="#">Speakers</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Contact</a></li>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="tickets.html">Tickets</a></li>  
+            <li><a class="dropdown-item" href="signup.html">Sign Up!</a></li>
+            <li><a class="dropdown-item" href="payment.html">Payment</a></li>
+            <li><a class="dropdown-item" href="#">Speakers</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Contact</a></li>
+          </ul>
+        </li>
       </ul>
-    </li>
-  </ul>
 
-  <form class="d-flex" role="search">
-    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-    <button class="btn btn-outline-success" type="submit">Search</button>
-  </form>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
 
-  <a href="checkout.html" class="btn btn-outline-dark position-relative ms-3 cart-link">
-    <i class="bi bi-cart3"></i>
-    <span class="ms-1">Cart</span>
-    <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
-  </a>
-</div>
+      <a href="checkout.html" class="btn btn-outline-dark position-relative ms-3 cart-link">
+        <i class="bi bi-cart3"></i>
+        <span class="ms-1">Cart</span>
+        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+      </a>
+    </div>
   </div>
 </nav>
 
-    
+<div class="banner text-center">
+  <h1>Motivational Speaker Conference</h1>
+  <p>Come Join us June 20-23, 2023 | New York City, New York</p>
+  <p>Learn about yourself and unlock your greatest potentional through a change of perspective with our iconic speakers.</p>
+  <br>
+  <a href="tickets.html" class="btn btn-warning btn-lg me-2">Buy Tickets!</a>
+  <a href="returns.html" class="btn btn-outline-light btn-lg">Need to Cancel?</a>
+</div>
 
-<!-- Main Banner Area-->
-  <div class="banner text-center">
-    <h1>Motivational Speaker Conference</h1>
-    <p>Come Join us June 20-23, 2023 | New York City, New York</p>
-    <p>Learn about yourself and unlock your greatest potentional through a change of perspective with our iconic speakers.</p>
-    <br>
-    <a href="tickets.html" class="btn btn-warning btn-lg">Buy Tickets!</a>
-  </div>
-
- <!-- Footer -->
-  <footer>
+<footer>
   <a href="#" style="margin-left: 50px;">Go to top</a>
   <a href="https://bdtp26.github.io/Motivational_Speaker_Conference/index.html" style="margin-left: 2px;">Home Page</a>
   <a href="https://bdtp26.github.io/Motivational_Speaker_Conference/signup.html" style="margin-left: 2px;">Sign up</a>
-  </footer>
+  <a href="https://bdtp26.github.io/Motivational_Speaker_Conference/returns.html" style="margin-left: 2px;">Returns / Cancellation</a>
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
