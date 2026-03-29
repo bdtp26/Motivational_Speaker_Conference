@@ -1,13 +1,11 @@
 /* Jamie Capone */
 
-/* General Body */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   background-color: #f5f0eb;
 }
 
-/* First section of the Homepage */
 .banner {
   color: white;
   background-color: #2c3e50;
@@ -23,26 +21,28 @@ body {
   font-size: 18px;
 }
 
-/* Sign up form section formatting */
 .signup-form .mb-3 {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-left: 30px;
+  margin-right: 30px;
 }
 
 .signup-form label {
-  width: 160px;
+  width: 180px;
   margin: 0;
+  font-weight: 600;
 }
 
 .signup-form input,
-.signup-form select {
-  width: 300px;
+.signup-form select,
+.signup-form textarea {
+  width: 100%;
+  max-width: 420px;
   margin: 0;
 }
 
-/* City images / tickets layout */
 .city-photos {
   display: flex;
   justify-content: space-evenly;
@@ -71,7 +71,6 @@ body {
   margin-top: 10px;
 }
 
-/* Footer */
 footer {
   background-color: #2c3e50;
   color: white;
@@ -94,7 +93,6 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* General card styling */
 .card {
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -106,12 +104,10 @@ footer a:hover {
   border-radius: 0 !important;
 }
 
-/* Required field star */
 .required-star {
   color: red;
 }
 
-/* Ticket table edits */
 #ticketTable th,
 #ticketTable td {
   vertical-align: middle;
@@ -123,26 +119,27 @@ footer a:hover {
   padding: 3px 10px;
 }
 
-/* Shopping cart icon */
 .cart-link {
   min-width: 95px;
 }
 
-/* Checkout / management card hover effects */
 #searchResults .card,
 #productsArea .card,
-#cartItems .card {
+#cartItems .card,
+#returnProductsArea .card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 #searchResults .card:hover,
-#productsArea .card:hover {
+#productsArea .card:hover,
+#returnProductsArea .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* JSON viewer */
-#jsonOut {
+#jsonOut,
+#billingJsonOut,
+#returnsJsonOut {
   font-family: "Courier New", Courier, monospace;
   font-size: 13px;
   background-color: #1e1e1e;
@@ -152,9 +149,20 @@ footer a:hover {
   word-break: break-word;
   padding: 15px;
   border-radius: 6px;
+  margin-bottom: 0;
 }
 
-/* Mobile utility */
+.return-product-image {
+  max-height: 220px;
+  object-fit: cover;
+  border: 3px solid #2c3e50;
+}
+
+.session-checkbox {
+  width: auto !important;
+  max-width: none !important;
+}
+
 @media (max-width: 768px) {
   .city-card {
     width: 100%;
@@ -167,7 +175,9 @@ footer a:hover {
 
   .signup-form label,
   .signup-form input,
-  .signup-form select {
+  .signup-form select,
+  .signup-form textarea {
     width: 100%;
+    max-width: 100%;
   }
 }
