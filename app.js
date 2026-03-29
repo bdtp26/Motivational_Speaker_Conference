@@ -1,4 +1,4 @@
-// Ivory Cathey
+//Ivory Cathey
 
 const toastEl = document.getElementById("msgToast");
 const toastTitleEl = document.getElementById("toastTitle");
@@ -237,7 +237,7 @@ function setupBillingForm() {
     return /^\d{5}$/.test(value.trim());
   }
 
-  billingForm.addEventListener("submit", async function (e) {
+  billingForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     const cart = getCart();
@@ -310,27 +310,16 @@ function setupBillingForm() {
     const jsonString = JSON.stringify(billing, null, 2);
     localStorage.setItem("billingDetails", jsonString);
 
+    const jsonOut = document.getElementById("billingJsonOut");
+    if (jsonOut) jsonOut.textContent = jsonString;
+
     const ajaxStatus = document.getElementById("billingAjaxStatus");
-    if (ajaxStatus) ajaxStatus.textContent = "Sending...";
-
-    try {
-      const response = await fetch("http://localhost:3000/api/billing", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: jsonString
-      });
-
-      const result = await response.json();
-
-      if (ajaxStatus) {
-        ajaxStatus.textContent = "Success ID: " + result.id;
-      }
-
-      showToast("Success", "Billing submitted.");
-    } catch (error) {
-      if (ajaxStatus) ajaxStatus.textContent = "Failed";
-      showToast("Error", "Submission failed.");
+    if (ajaxStatus) {
+      ajaxStatus.textContent = "Saved locally. No server required.";
     }
+
+    showToast("Success", "Billing submitted.");
+    billingForm.reset();
   });
 }
 
