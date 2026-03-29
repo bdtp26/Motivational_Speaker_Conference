@@ -2,6 +2,7 @@
 
 // backend for the AJAX data has a landing page. creates the server and allows requests. 
 // signup sned JSON via AJAX, req.body = JSON sent, sever logs it, sends back success response + confirmation 
+// just a model, nothing can save or process, just a log. fake API for AJAX goes somewhere
 // terrible class
 
 const express = require("express");
