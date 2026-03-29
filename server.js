@@ -1,3 +1,9 @@
+// Ivory Cathey 
+
+// backend for the AJAX data has a landing page. creates the server and allows requests. 
+// signup sned JSON via AJAX, req.body = JSON sent, sever logs it, sends back success response + confirmation 
+// terrible class
+
 const express = require("express");
 const cors = require("cors");
 
