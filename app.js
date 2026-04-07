@@ -464,4 +464,3 @@ document.addEventListener("DOMContentLoaded", function () {
   setupSignupForm();
   setupReturnsForm();
 });
-});
