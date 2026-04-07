@@ -55,22 +55,22 @@
     <form class="signup-form" id="signupForm" novalidate>
       <div class="mb-3">
         <label for="fname">Full Name:</label>
-        <input type="text" id="fname" name="fname" ng-model="signup.fullName" required>
+        <input type="text" id="fname" name="fname" required>
       </div>
 
       <div class="mb-3">
         <label for="email">Email Address:</label>
-        <input type="email" id="email" name="email" ng-model="signup.email" required>
+        <input type="email" id="email" name="email" required>
       </div>
 
       <div class="mb-3">
         <label for="phone">Contact Phone Number:</label>
-        <input type="tel" id="phone" name="phone" ng-model="signup.phone">
+        <input type="tel" id="phone" name="phone">
       </div>
 
       <div class="mb-3">
         <label for="participationType">Participation Type:</label>
-        <select id="participationType" name="participationType" ng-model="signup.participationType" required>
+        <select id="participationType" name="participationType" required>
           <option value="">Select a participation type...</option>
           <option value="in-person">In-person</option>
           <option value="virtual">Virtual</option>
