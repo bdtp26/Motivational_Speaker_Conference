@@ -9,17 +9,16 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
-require("dotenv").config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.use(express.static(__dirname));
 app.use(cors());
 app.use(express.json());
 
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect("mongodb://127.0.0.1:27017/conferenceDB")
   .then(() => {
     console.log("Connected to MongoDB successfully.");
   })
@@ -123,6 +122,8 @@ app.get("/api/cart", async (req, res) => {
 });
 
 app.post("/api/cart", async (req, res) => {
+  console.log("cart hit", req.body);
+
   const item = req.body;
   const existing = await Cart.findOne({ id: item.id });
 
@@ -147,6 +148,7 @@ app.delete("/api/cart", async (req, res) => {
 });
 
 app.post("/api/shipping", async (req, res) => {
+  console.log("shipping hit", req.body);
   const record = await Shipping.create(req.body);
   res.json({ success: true, record });
 });
@@ -157,6 +159,7 @@ app.get("/api/shipping", async (req, res) => {
 });
 
 app.post("/api/billing", async (req, res) => {
+  console.log("billing hit", req.body);
   const record = await Billing.create(req.body);
   res.json({ success: true, record });
 });
@@ -167,6 +170,7 @@ app.get("/api/billing", async (req, res) => {
 });
 
 app.post("/api/returns", async (req, res) => {
+  console.log("returns hit", req.body);
   const record = await Return.create(req.body);
   res.json({ success: true, record });
 });
@@ -177,11 +181,7 @@ app.get("/api/returns", async (req, res) => {
 });
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(PORT, () => {
