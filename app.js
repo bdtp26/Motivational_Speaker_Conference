@@ -73,8 +73,26 @@ function addToCart(product) {
       quantity: 1
     });
   }
-
   saveCart(cart);
+
+  fetch("/api/cart", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: product.id,
+      title: product.title,
+      category: product.category,
+      unit: product.unit,
+      price: Number(product.price),
+      info: product.info,
+      image: product.image || "",
+      quantity: 1
+    })
+  })
+  .then(res => res.json())
+  .then(data => console.log("Cart saved:", data))
+  .catch(err => console.error("Cart error:", err));
+}
 }
 
 function populateTicketDropdowns() {
@@ -313,13 +331,113 @@ function setupBillingForm() {
     const jsonOut = document.getElementById("billingJsonOut");
     if (jsonOut) jsonOut.textContent = jsonString;
 
-    const ajaxStatus = document.getElementById("billingAjaxStatus");
-    if (ajaxStatus) {
-      ajaxStatus.textContent = "Saved locally. No server required.";
+    fetch("/api/billing", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: jsonString
+    })
+    .then(res => res.json())
+    .then(data => {
+      const ajaxStatus = document.getElementById("billingAjaxStatus");
+      if (ajaxStatus) {
+        ajaxStatus.textContent = "Saved to MongoDB.";
+      }
+      console.log("Billing saved:", data);
+      showToast("Success", "Billing submitted.");
+      billingForm.reset();
+    })
+    .catch(err => {
+      console.error("Billing error:", err);
+      showToast("Error", "Could not submit billing.");
+    });
+  });
+}
+function setupSignupForm() {
+  const signupForm = document.getElementById("signupForm");
+  if (!signupForm) return;
+
+  function validEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+  }
+
+  signupForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const member = {
+      fullName: document.getElementById("fname").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      participationType: document.getElementById("participationType").value.trim(),
+      sessions: Array.from(document.querySelectorAll("input[name='session']:checked")).map(box => box.value),
+      submittedAt: new Date().toISOString()
+    };
+
+    if (!member.fullName || !member.email || !member.participationType) {
+      showToast("Error", "Please fill out all required fields.");
+      return;
     }
 
-    showToast("Success", "Billing submitted.");
-    billingForm.reset();
+    if (!validEmail(member.email)) {
+      showToast("Error", "Please enter a valid email address.");
+      return;
+    }
+
+    fetch("/api/shipping", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(member)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log("Shipping saved:", data);
+      showToast("Success", "Sign up submitted.");
+      signupForm.reset();
+    })
+    .catch(err => {
+      console.error("Shipping error:", err);
+      showToast("Error", "Could not submit sign up.");
+    });
+  });
+}
+
+function setupReturnsForm() {
+  const returnsForm = document.getElementById("returnsForm");
+  if (!returnsForm) return;
+
+  returnsForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const returnRequest = {
+      fullName: document.getElementById("returnName").value.trim(),
+      email: document.getElementById("returnEmail").value.trim(),
+      productName: document.getElementById("selectedReturnProduct").value.trim(),
+      price: document.getElementById("selectedReturnPrice").value.trim(),
+      reason: document.getElementById("returnReason").value.trim(),
+      condition: document.getElementById("productCondition").value.trim(),
+      details: document.getElementById("returnDetails").value.trim(),
+      submittedAt: new Date().toISOString()
+    };
+
+    if (!returnRequest.fullName || !returnRequest.email || !returnRequest.productName || !returnRequest.reason || !returnRequest.condition) {
+      showToast("Error", "Please complete all required return fields.");
+      return;
+    }
+
+    fetch("/api/returns", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(returnRequest)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log("Return saved:", data);
+      showToast("Success", "Return request submitted.");
+      returnsForm.reset();
+    })
+    .catch(err => {
+      console.error("Return error:", err);
+      showToast("Error", "Could not submit return request.");
+    });
   });
 }
 
@@ -329,4 +447,6 @@ document.addEventListener("DOMContentLoaded", function () {
   setupTicketForm();
   renderCartPage();
   setupBillingForm();
+  setupSignupForm();
+  setupReturnsForm();
 });
