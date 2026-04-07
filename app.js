@@ -73,6 +73,7 @@ function addToCart(product) {
       quantity: 1
     });
   }
+
   saveCart(cart);
 
   fetch("/api/cart", {
@@ -93,7 +94,6 @@ function addToCart(product) {
   .then(data => console.log("Cart saved:", data))
   .catch(err => console.error("Cart error:", err));
 }
-
 
 function populateTicketDropdowns() {
   const products = JSON.parse(localStorage.getItem("products")) || [];
@@ -352,6 +352,7 @@ function setupBillingForm() {
     });
   });
 }
+
 function setupSignupForm() {
   const signupForm = document.getElementById("signupForm");
   if (!signupForm) return;
@@ -441,6 +442,19 @@ function setupReturnsForm() {
   });
 }
 
+if (window.angular) {
+  angular.module("conferenceApp", [])
+    .controller("SignupController", function ($scope) {
+      $scope.signup = {};
+    })
+    .controller("CheckoutController", function ($scope) {
+      $scope.billing = {};
+    })
+    .controller("ReturnsController", function ($scope) {
+      $scope.returnForm = {};
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   initializeProducts();
   updateCartCount();
@@ -449,4 +463,5 @@ document.addEventListener("DOMContentLoaded", function () {
   setupBillingForm();
   setupSignupForm();
   setupReturnsForm();
+});
 });
