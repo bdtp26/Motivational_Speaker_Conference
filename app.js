@@ -93,7 +93,7 @@ function addToCart(product) {
   .then(data => console.log("Cart saved:", data))
   .catch(err => console.error("Cart error:", err));
 }
-}
+
 
 function populateTicketDropdowns() {
   const products = JSON.parse(localStorage.getItem("products")) || [];
