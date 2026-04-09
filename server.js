@@ -116,6 +116,24 @@ app.get("/api/products", async (req, res) => {
   res.json(products);
 });
 
+
+// Jamie Capone added this next part so manage.html can save new products to the Database. 
+app.post("/api/products", async (req, res) => {
+  console.log("products hit", req.body);
+  const existing = await Product.findOne({ id: req.body.id });
+  if (existing) {
+    return res.json({ error: "This product already exists. Please try again." });
+  }
+  const newProduct = await Product.create(req.body);
+  res.json(newProduct);
+}); 
+
+app.put("/api/products/:id", async (req, res) => {
+  console.log("product put hit", req.params.id);
+  const updated = await Product.findOneAndUpdate({ id: req.params.id }, req.body, { new: true });
+  res.json(updated);
+});
+
 app.get("/api/cart", async (req, res) => {
   const cart = await Cart.find();
   res.json(cart);
