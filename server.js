@@ -180,6 +180,10 @@ app.put("/api/cart/:id", async (req, res) => {
   const updated = await Cart.findOneAndUpdate({ id: req.params.id }, req.body, { new: true });
   res.json(updated);
 });
+app.delete("/api/shipping/:id", async (req, res) => {
+  await Shipping.findByIdAndDelete(req.params.id);
+  res.json({ success: true });
+});
 
 app.post("/api/shipping", async (req, res) => {
   console.log("shipping hit", req.body);
