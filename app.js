@@ -274,8 +274,9 @@ function setupBillingForm() {
     return /^[A-Za-z\s]+$/.test(value.trim());
   }
 
+  //Jamie Capone: Updated the regex in order to allow spaces so that it is more user friendly in a normal format ex: 1234 5678 1010 1212
   function numbersOnly(value) {
-    return /^\d+$/.test(value.trim());
+    return /^[\d\s]+$/.test(value.trim()) && value.replace(/\s/g, "").length >= 12;
   }
 
   function zipValid(value) {
@@ -300,7 +301,7 @@ function setupBillingForm() {
       state: document.getElementById("billingState").value.trim(),
       zip: document.getElementById("billingZip").value.trim(),
       cardType: document.getElementById("cardType").value.trim(),
-      cardNumber: document.getElementById("cardNumber").value.trim(),
+      cardNumber: document.getElementById("cardNumber").value.replace(/\s/g,"").trim(),
       cardExp: document.getElementById("cardExp").value.trim(),
       code: document.getElementById("cardCode").value.trim(),
       items: cart,
