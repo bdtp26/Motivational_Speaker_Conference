@@ -13,7 +13,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
   <script type="module" src="app.js"></script>
 </head>
-<body class="bg-light" ng-app="conferenceApp" ng-controller="CheckoutController">
+<body class="bg-light">
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
@@ -52,32 +52,32 @@
   </div>
 </nav>
 
+  
+<!--Jamie Capone: added fetch to pull attendee sign up data from Mongo and it displays in the table--> 
 <div class="container my-4">
-  <div class="row g-4">
-    <div class="col-lg-7">
       <div class="card p-4 mb-4">
         <h2 class="mb-3">Attendance Table</h2>
-        <p class="text-muted">List of attendees</p>
-<table>
-<th></th>
-  
-</table>
-        
-        <div id="cartItems"></div>
-
-    
-      <div class="card p-3 mb-4">
-        <h4>Billing JSON</h4>
-        <pre id="billingJsonOut">{{ billingJsonPreview }}</pre>
+        <p class="text-muted">List of attendees from MongoDB</p>
+        <table class="table" id="attendeeTable">
+        <thead>
+          <tr style="background-color: #2c3e50; color: white;">
+            <th>#</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Participation</th>
+            <th>Sessions</th>
+            <th>Submitted</th>
+          </tr>
+        </thead>
+        <tbody id="attendeeBody">
+          <tr><td colspan="7">Loading...</td></tr>
+        </tbody>
+      </table>
       </div>
-
-      <div class="card p-3">
-        <h4>AJAX / AngularJS Status</h4>
-        <p id="billingAjaxStatus" class="mb-0">{{ billingAjaxStatus }}</p>
-      </div>
-    </div>
-  </div>
 </div>
+        
+      
 
 <!-- Footer -- Brian Tucker-->
 <footer>
@@ -85,6 +85,33 @@
   <a href="index.html" style="margin-left: 2px;">Home Page</a>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  
+ <!-- Jamie Capone: added this script to fetch attendee data from /api/shipping and to build table rows from MongoDB -->
+  <script>
+    fetch("/api/shipping")
+    .then(res => res.json())
+    .then(data => {
+      var tbody = document.getElementById("attendeeBody");
+      if (data.length === 0) {
+      tbody.innerHTML = "<tr><td colspan='7'>No attendees yet.</td></tr>";
+      return;
+    }
+    var rows = "";
+    for (var i = 0; i < data.length; i++){
+      rows += "<tr>";
+      rows += "<td>" + (i + 1) + "</td>";
+      rows += "<td>" + data[i].fullName + "</td>";
+      rows += "<td>" + data[i].email + "</td>";
+      rows += "<td>" + data[i].phone + "</td>";
+      rows += "<td>" + data[i].participationType + "</td>";
+      rows += "<td>" + data[i].sessions.join(", ") + "</td>";
+      rows += "<td>" + data[i].submittedAt + "</td>";
+      rows += "</tr>";
+    }
+    tbody.innerHTML = rows;
+    })
+    .catch(err => console.error("shipping error:", err));
+  </script>
 </body>
 </html>
 
