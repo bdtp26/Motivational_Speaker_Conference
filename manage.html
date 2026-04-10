@@ -153,8 +153,27 @@ $(function () {
     const idx = products.findIndex(x => x.id === p.id);
     if (idx >= 0) {
       products[idx] = p;
+      
+    //Jamie Capone: added PUT so when editing a product it also updates MongoDB not just localStorage
+   $.ajax({
+     url: "/api/products/" +p.id,
+     method: "PUT",
+     contentType: "application/json",
+     data: JSON.stringify(p),
+     success: function() { console.log("Cart saved:", p.id); },
+     error: function() { console.error("Cart error:"); }
+   });
     } else {
       products.push(p);
+      //Jamie Capone: added POST so new products also save to MongoDB
+      $.ajax({
+        url: "/api/products",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(p),
+        success: function() { console.log("Cart saved:", p.id); },
+        error: function() {console.error("Cart error:"); }
+      });
     }
 
     save();
