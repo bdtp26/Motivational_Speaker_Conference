@@ -142,8 +142,7 @@ app.get("/api/cart", async (req, res) => {
 app.post("/api/cart", async (req, res) => {
   console.log("cart hit", req.body);
 
-  const item = req.body;
-  const existing = await Cart.findOne({ id: item.id });
+ const existing = await Cart.findOne( {id: req.body.id });
 
   if (existing) {
     existing.quantity += 1;
@@ -151,7 +150,17 @@ app.post("/api/cart", async (req, res) => {
     return res.json(existing);
   }
 
-  const newItem = await Cart.create(item);
+  //Jamie Capone: Front end stopped sending quantity so building item here with quantity set to 1
+  const newItem = await Cart.create({
+    id: req.body.id,
+    title: req.body.title,
+    category: req.body.category,
+    unit: req.body.unit,
+    price: req.body.price,
+    info: req.body.info, 
+    image: req.body.image,
+    quantity: 1
+  });
   res.json(newItem);
 });
 
