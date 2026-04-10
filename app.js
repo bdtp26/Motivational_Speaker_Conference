@@ -227,8 +227,12 @@ function renderCartPage() {
   clearCartBtn.addEventListener("click", function () {
     saveCart([]);
     renderCart();
-  });
-
+//Jamie Capone: added delete to server so that when clearing cart updates, it updates MongoDB and not just the localStorage.
+  fetch("/api/cart", {method: "DELETE" })
+    .then(res => res.json())
+    .then(data => console.log("Cart saved:", data))
+    .catch(err => console.error("Cart error:", err)); 
+});
   cartItems.addEventListener("click", function (e) {
     if (!e.target.classList.contains("remove-cart-item")) return;
     const id = e.target.getAttribute("data-id");
