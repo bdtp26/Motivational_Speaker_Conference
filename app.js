@@ -75,7 +75,7 @@ function addToCart(product) {
   }
 
   saveCart(cart);
-
+// Jamie Capone: Took out quantity from POST body and syncing back from server so local and database match 
   fetch("/api/cart", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -86,12 +86,17 @@ function addToCart(product) {
       unit: product.unit,
       price: Number(product.price),
       info: product.info,
-      image: product.image || "",
-      quantity: 1
+      image: product.image || ""
     })
   })
   .then(res => res.json())
-  .then(data => console.log("Cart saved:", data))
+  .then(data => {
+    const cart = getCart();
+    const item = cart.find(i => i.id === data.id);
+    if (item) item.quantity = data.quantity;
+    saveCart(cart);
+    console.log("Cart saved:", data);
+})
   .catch(err => console.error("Cart error:", err));
 }
 
