@@ -235,6 +235,11 @@ function renderCartPage() {
     const cart = getCart().filter(item => item.id !== id);
     saveCart(cart);
     renderCart();
+  //Jamie Capone: added delete function to the server so that when items are removed it updates Mongo and not just the localStorage
+    fetch("/api/cart/" + id, { method: "DELETE" })
+      .then(res => res.json())
+      .then(data => console.log("Cart saved:", data))
+      .catch(err => console.error("Cart error:", err));
   });
 
   renderCart();
