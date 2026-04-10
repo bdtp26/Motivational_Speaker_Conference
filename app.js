@@ -348,7 +348,8 @@ function setupBillingForm() {
       return;
     }
 
-    if (!numbersOnly(billing.code) || (billing.code.length !== 3 && billing.code.length !== 4)) {
+    //Jamie Capone: Security code uses its own check since numbersOnly now requires 12+ digits for card numbers this has to be unique
+    if (!/^\d+$/.test(billing.code) || (billing.code.length !== 3 && billing.code.length !== 4)) {
       showToast("Error", "Invalid security code.");
       return;
     }
