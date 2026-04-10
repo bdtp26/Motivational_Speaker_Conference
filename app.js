@@ -75,6 +75,7 @@ function addToCart(product) {
   }
 
   saveCart(cart);
+  
 // Jamie Capone: Took out quantity from POST body and syncing back from server so local and database match 
   fetch("/api/cart", {
     method: "POST",
@@ -128,11 +129,23 @@ function populateTicketDropdowns() {
   populate(laSelect, ["LA", "Los Angeles"]);
 }
 
+//Jamie Capone: Loading products from the server so that the dropdowns always pull fresh from Mongo instead of just localStorage
 function setupTicketForm() {
   const ticketForm = document.getElementById("ticketForm");
   if (!ticketForm) return;
+  
+fetch("/api/products")
+  .then(res => res.json())
+  .then(data => {
+    localStorage.setItem("products", JSON.stringify(data));
+    populateTicketDropdowns();
+  })
 
-  populateTicketDropdowns();
+  //Jamie Capone: added the catch so that it uses localStorage as backup if offline
+  .catch(err => {
+    console.error("product error:", err);
+    populateTicketDropdowns();
+});
 
   ticketForm.addEventListener("submit", function (e) {
     e.preventDefault();
