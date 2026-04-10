@@ -10,16 +10,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
   <script type="module" src="app.js"></script>
 </head>
-<body class="bg-light" ng-app="conferenceApp" ng-controller="CheckoutController">
+<body class="bg-light">
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="index.html">IST Conferences</a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#checkoutNav">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -39,7 +38,8 @@
             <li><a class="dropdown-item" href="#">Contact</a></li>
                  <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="database.html">Database of attendees</a></li>
-                    </ul>
+          <li><a class="dropdown-item" href="endtoendtesting.html">End to End Testing</a></li>
+      </ul>
         </li>
       </ul>
 
@@ -51,30 +51,23 @@
     </div>
   </div>
 </nav>
-
+<!-- Jamie Capone: added a test table and scripting below in order to run live tests against each API endpoint to show pass or fail-->
 <div class="container my-4">
-  <div class="row g-4">
-    <div class="col-lg-7">
       <div class="card p-4 mb-4">
         <h2 class="mb-3">End to End Testing</h2>
-        <table>
-<th></th>
-  
-</table>
-        
-        <div id="cartItems"></div>
-
-    
-      <div class="card p-3 mb-4">
-        <h4>Billing JSON</h4>
-        <pre id="billingJsonOut">{{ billingJsonPreview }}</pre>
-      </div>
-
-      <div class="card p-3">
-        <h4>AJAX / AngularJS Status</h4>
-        <p id="billingAjaxStatus" class="mb-0">{{ billingAjaxStatus }}</p>
-      </div>
-    </div>
+        <p class="text-muted">Live connectivity test runs against the Node.js API and MongoDB</p>
+        <table class="table" id="testTable">
+          <thead>
+            <tr style="background-color: #2c3e50; color: white;">
+              <th>Test</th>
+              <th>End Point</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+        <tbody id="testBody">
+          <tr><td colspan="3">Running tests...</td></tr>
+        </tbody>
+        </table>
   </div>
 </div>
 
@@ -85,6 +78,42 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Jamie Capone: wrote this script to loop through each API endpoint in order to build the test result table that shows PASS or FAIL-->
+<script>
+  var endpoints = [
+    { name: "Product load", url: "/api/products" },
+    { name: "Cart loads", url: "/api/cart" },
+    { name: "Shipping loads", url: "/api/shipping" },
+    { name: "Billing loads", url: "/api/billing" },
+    { name: "Return loads", url: "/api/returns" }
+    ];
+
+  var tbody = document.getElementById("testBody");
+  tbody.innerHTML = "";
+
+  for (var i = 0; i < endpoints.length; i ++) {
+    (function(test) {
+      fetch(test.url)
+        .then(res => res.json())
+        .then(data => {
+          var row = "<tr>";
+          row += "<td>" + test.name + "</td>";
+          row += "<td>" + test.url + "</td>";
+          row += "<td style='color: green; font-weight: bold;'>PASS</td>";
+          row += "</tr>";
+          tbody.innerHTML += row;
+        })
+      .catch(err => {
+        var row = "<tr>";
+        row += "<td>" + test.name + "</td>";
+        row += "<td>" + test.url + "</td>";
+        row += "<td style='color: red; font-weight: bold;'>FAIL</td>"
+        row += "</tr>";
+        tbody.innerHTML += row;
+      });
+    })(endpoints[i]);
+    }
+</script>
 </body>
 </html>
 
