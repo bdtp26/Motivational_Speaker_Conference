@@ -165,6 +165,13 @@ app.delete("/api/cart", async (req, res) => {
   res.json({ success: true });
 });
 
+//Jamie Capone added cart and shipping PUT routes for full CRUD update functionality
+app.put("/api/cart/:id", async (req, res) => {
+  console.log("cart put hit", req.params.id);
+  const updated = await Cart.findOneAndUpdate({ id: req.params.id }, req.body, { new: true });
+  res.json(updated);
+});
+
 app.post("/api/shipping", async (req, res) => {
   console.log("shipping hit", req.body);
   const record = await Shipping.create(req.body);
@@ -174,6 +181,13 @@ app.post("/api/shipping", async (req, res) => {
 app.get("/api/shipping", async (req, res) => {
   const shipping = await Shipping.find();
   res.json(shipping);
+});
+
+//Jamie Capone added shipping PUT route to finish the full CRUD signups
+app.put("/api/shipping/:id", async (req, res) => {
+  console.log("shipping put hit", req.params.id);
+  const updated = await Shipping.findByIdAndUpdate(req.params.id, req.body, {new: true });
+  res.json(updated); 
 });
 
 app.post("/api/billing", async (req, res) => {
